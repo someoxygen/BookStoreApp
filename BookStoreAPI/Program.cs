@@ -1,5 +1,5 @@
-using BookStoreAPI.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Repositories.EFCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
