@@ -1,6 +1,6 @@
-﻿using BookStoreAPI.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Entities.Models;
 
 namespace BookStoreAPI.Repositories.Config
 {
