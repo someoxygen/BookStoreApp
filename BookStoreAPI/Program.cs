@@ -14,6 +14,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.ConfigureSqlContext(builder.Configuration);
 //builder.Services.AddDbContext<RepositoryContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+//Configure Repository Manager
+builder.Services.ConfigureRepositoryManager();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

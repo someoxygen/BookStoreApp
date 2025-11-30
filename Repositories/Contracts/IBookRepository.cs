@@ -13,6 +13,6 @@ namespace Repositories.Contracts
         void UpdateBook(Book book);
         void DeleteBook(Book book);
         IQueryable<Book> GetAllBooks(bool trackChanges);
-        IQueryable<Book> GetBookById(int bookId, bool trackChanges);
+        Book GetBookById(int bookId, bool trackChanges);
     }
 }

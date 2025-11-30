@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Repositories.Contracts;
 using Repositories.EFCore;
 
 namespace BookStoreAPI.Controllers
@@ -10,10 +11,10 @@ namespace BookStoreAPI.Controllers
     [ApiController]
     public class BooksController : ControllerBase
     {
-        public RepositoryContext _context;
-        public BooksController(RepositoryContext context)
+        private readonly IRepositoryManager _manager;
+        public BooksController(IRepositoryManager manager)
         {
-            _context = context;
+            _manager = manager;
         }
 
         [HttpGet]
@@ -21,7 +22,7 @@ namespace BookStoreAPI.Controllers
         {
             try
             {
-                var books = _context.Books.ToList();
+                var books = _manager.Book.GetAllBooks(trackChanges: false).ToList();
                 return Ok(books);
             }
             catch (Exception ex)
@@ -35,7 +36,7 @@ namespace BookStoreAPI.Controllers
         {
             try
             {
-                var book = _context.Books.Where(book => book.Id.Equals(id)).SingleOrDefault();
+                var book = _manager.Book.GetBookById(id, trackChanges: false);
                 if (book == null)
                 {
                     return NotFound();
@@ -58,8 +59,8 @@ namespace BookStoreAPI.Controllers
                 {
                     return BadRequest();
                 }
-                _context.Books.Add(book);
-                _context.SaveChanges();
+                _manager.Book.Create(book);
+                _manager.Save();
                 return StatusCode(201, book);
             }
             catch (Exception ex)
@@ -73,7 +74,7 @@ namespace BookStoreAPI.Controllers
         {
             try
             {
-                var book = _context.Books.Where(book => book.Id.Equals(id)).SingleOrDefault();
+                var book = _manager.Book.GetBookById(id, trackChanges: true);
                 if (book == null)
                 {
                     return NotFound();
@@ -84,7 +85,7 @@ namespace BookStoreAPI.Controllers
                 }
                 book.Title = updatedBook.Title;
                 book.Price = updatedBook.Price;
-                _context.SaveChanges();
+                _manager.Save();
                 return Ok(book);
             }
             catch (Exception ex)
@@ -98,13 +99,13 @@ namespace BookStoreAPI.Controllers
         {
             try
             {
-                var book = _context.Books.Where(book => book.Id.Equals(id)).SingleOrDefault();
+                var book = _manager.Book.GetBookById(id, trackChanges: false);
                 if (book == null)
                 {
                     return NotFound();
                 }
-                _context.Books.Remove(book);
-                _context.SaveChanges();
+                _manager.Book.Delete(book);
+                _manager.Save();
                 return NoContent();
             }
             catch (Exception ex)
@@ -118,13 +119,13 @@ namespace BookStoreAPI.Controllers
         {
             try
             {
-                var book = _context.Books.Where(book => book.Id.Equals(id)).SingleOrDefault();
+                var book = _manager.Book.GetBookById(id, trackChanges: true);
                 if (book == null)
                 {
                     return NotFound();
                 }
                 patchedBook.ApplyTo(book);
-                _context.SaveChanges();
+                _manager.Book.Update(book);
                 return NoContent();
             }
             catch (Exception ex)

@@ -22,8 +22,8 @@ namespace Repositories.EFCore
         public IQueryable<Book> GetAllBooks(bool trackChanges) 
             => FindAll(trackChanges);
 
-        public IQueryable<Book> GetBookById(int bookId, bool trackChanges) 
-            => FindByCondition(book => book.Id == bookId, trackChanges);
+        public Book GetBookById(int bookId, bool trackChanges) 
+            => FindByCondition(book => book.Id == bookId, trackChanges).SingleOrDefault();
 
         public void UpdateBook(Book book) => Update(book);
     }
