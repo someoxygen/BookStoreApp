@@ -17,6 +17,9 @@ builder.Services.ConfigureSqlContext(builder.Configuration);
 //Configure Repository Manager
 builder.Services.ConfigureRepositoryManager();
 
+//Configure Service Manager
+builder.Services.ConfigureServiceManager();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
