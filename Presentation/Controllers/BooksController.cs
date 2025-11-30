@@ -1,15 +1,17 @@
-﻿using Entities.Models;
-using Microsoft.AspNetCore.Http;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Entities.Models;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using Repositories.Contracts;
-using Repositories.EFCore;
 using Services.Contracts;
 
-namespace BookStoreAPI.Controllers
+namespace Presentation.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/books")]
     public class BooksController : ControllerBase
     {
         private readonly IServiceManager _manager;
@@ -48,7 +50,7 @@ namespace BookStoreAPI.Controllers
             {
                 throw new Exception(ex.Message);
             }
-            
+
         }
 
         [HttpPost]
@@ -92,7 +94,7 @@ namespace BookStoreAPI.Controllers
         {
             try
             {
-                _manager.BookService.DeleteBook(id,false);
+                _manager.BookService.DeleteBook(id, false);
                 return NoContent();
             }
             catch (Exception ex)
@@ -112,7 +114,7 @@ namespace BookStoreAPI.Controllers
                     return NotFound();
                 }
                 patchedBook.ApplyTo(book);
-                _manager.BookService.UpdateBook(id,book,true);
+                _manager.BookService.UpdateBook(id, book, true);
                 return NoContent();
             }
             catch (Exception ex)
